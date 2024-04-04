@@ -1,0 +1,43 @@
+apply plugin: 'java'
+
+repositories {
+  mavenCentral()
+
+  //Could not GET 'https://bits.netbeans.org/maven2/org/netbeans/modules/org-netbeans-lib-profiler/RELEASE802/org-netbeans-lib-profiler-RELEASE802.pom'. Received status code 401 from server: Repository decommissioned. Please refer to https://netbeans.apache.org/about/oracle-transition.html for more information.
+  // maven {
+  //   url "https://bits.netbeans.org/maven2"
+  // }
+}
+
+dependencies {
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0'
+  testImplementation 'org.hamcrest:hamcrest:2.2'
+  //testImplementation 'org.gridkit.jvmtool:hprof-heap:0.16'
+  testImplementation 'org.netbeans.modules:org-netbeans-lib-profiler:RELEASE210'
+}
+
+tasks.withType(JavaCompile) {
+  configure(options) {
+    options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked' << '-Xdiags:verbose'
+  }
+}
+
+test {
+  useJUnitPlatform()
+  testLogging {
+    events'standardOut', 'standardError'
+    exceptionFormat = 'full'
+  }
+  jvmArgs [
+    //To ensure that .gc() methods run a STW full GC cleaning current garbage
+    '-XX:+UseParallelGC',
+    //'-XX:+UseZGC',
+    // '-verbosegc',
+    // '-Xbatch',
+    // '-XX:+PrintCompilation',
+    // '-XX:+UnlockDiagnosticVMOptions',
+    // '-XX:+PrintInlining',
+    // '-XX:CompileCommand=inline com.seismotech.enriqueta.hash.SipHashingTest$Memory::checkMemoryLong',
+  ]
+}
