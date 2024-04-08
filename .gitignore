@@ -1,5 +1,6 @@
 *~
 *.class
+a.out
 /.gradle
 /build
 /local
