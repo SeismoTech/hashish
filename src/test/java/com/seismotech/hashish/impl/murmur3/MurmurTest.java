@@ -16,7 +16,7 @@ class MurmurTest {
   @Nested
   class Murmur32 {
     @Test
-    void compatibleWithApacheMurmurOnLongs() {
+    void compatibleWithApacheOnLongs() {
       final int T = 200;
       final Contester gen = new Contester();
       for (int seed: MurmurTestData.SEEDS) {
@@ -34,7 +34,7 @@ class MurmurTest {
     }
 
     @Test
-    void compatibleWithApacheMurmurOnBytes() {
+    void compatibleWithApacheOnBytes() {
       final int T = 200;
       final Contester gen = new Contester();
       final byte[] contest = new byte[1*1024*1024];
@@ -53,7 +53,7 @@ class MurmurTest {
   @Nested
   class Murmur128x64 {
     @Test
-    void compatibleWithApacheMurmurOnBytes() {
+    void compatibleWithApacheOnBytes() {
       final int T = 200;
       final Contester gen = new Contester();
       final byte[] contest = new byte[1*1024*1024];

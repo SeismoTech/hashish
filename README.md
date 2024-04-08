@@ -31,7 +31,7 @@ hashing (or message digest) algorithms.
 Particularly, there is an implementation of
 Murmur3\_32, 
 Murmur3\_x64\_128,
-and XXHash32.
+and xxHash32.
 
 [Guava](https://guava.dev/)
 has a package [`com.google.common.hash`](
@@ -40,3 +40,12 @@ with
 Murmur3\_32,
 Murmur3\_x64\_128,
 and SipHash-2-4.
+
+[Zero-Allocation-Hashing](
+https://github.com/OpenHFT/Zero-Allocation-Hashing/tree/ea)
+is a specific project of hashing algorithms
+focused on performance (and zero-allocation)
+from OpenHFT (Chronicle Software).
+It has several hashing algorithms, including Murmur3 and xxHash.
+It is a good project to compare with, not only for performance but also to
+learn techiques.
