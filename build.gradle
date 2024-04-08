@@ -1,3 +1,7 @@
+plugins {
+  id 'me.champeau.jmh' version '0.7.2'
+}
+
 apply plugin: 'java'
 
 repositories {
@@ -11,15 +15,20 @@ repositories {
 
 dependencies {
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.0'
   testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0'
   testImplementation 'org.hamcrest:hamcrest:2.2'
   //testImplementation 'org.gridkit.jvmtool:hprof-heap:0.16'
   testImplementation 'org.netbeans.modules:org-netbeans-lib-profiler:RELEASE210'
+  testImplementation 'commons-codec:commons-codec:1.16.1'
+  testImplementation 'com.google.guava:guava:33.1.0-jre'
 }
 
 tasks.withType(JavaCompile) {
   configure(options) {
-    options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked' << '-Xdiags:verbose'
+    options.compilerArgs
+      << '-Xlint:deprecation' << '-Xlint:unchecked' << '-Xdiags:verbose'
+      << '--add-modules=jdk.incubator.vector'
   }
 }
 
@@ -31,6 +40,7 @@ test {
   }
   jvmArgs [
     //To ensure that .gc() methods run a STW full GC cleaning current garbage
+    '--add-modules=jdk.incubator.vector',
     '-XX:+UseParallelGC',
     //'-XX:+UseZGC',
     // '-verbosegc',
@@ -39,5 +49,16 @@ test {
     // '-XX:+UnlockDiagnosticVMOptions',
     // '-XX:+PrintInlining',
     // '-XX:CompileCommand=inline com.seismotech.enriqueta.hash.SipHashingTest$Memory::checkMemoryLong',
+  ]
+}
+
+jmh {
+  //-Pjmhinc=AdlerBenchmark
+  if (rootProject.hasProperty('jmhinc')) {
+    includes = [jmhinc]
+  }
+  jvmArgs = [
+    '--enable-preview',
+    '--add-modules=jdk.incubator.vector',
   ]
 }

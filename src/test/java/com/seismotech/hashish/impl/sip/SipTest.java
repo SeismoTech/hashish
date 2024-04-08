@@ -29,7 +29,7 @@ import org.netbeans.lib.profiler.heap.Heap;
 import org.netbeans.lib.profiler.heap.HeapFactory;
 import org.netbeans.lib.profiler.heap.JavaClass;
 
-class SipHashingTest {
+class SipTest {
 
   static final long FK0 = 0x0706050403020100L, FK1 = 0x0f0e0d0c0b0a0908L;
 

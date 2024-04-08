@@ -17,4 +17,26 @@ primitive types, `byte[]` and `String`.
 There must be also a way to hash structured data.
 
 The implementation heavily leverages scalar-replacement
-to get both an abstract and reusable design and a great performance.
+to get both an abstract and reusable design,
+and a great performance.
+
+
+Other libraries
+----------------------------------------------------------------------
+
+[Apache Common Codec](
+https://commons.apache.org/proper/commons-codec/apidocs/index.html)
+has an `org.apache.commons.codec.digest` package with several
+hashing (or message digest) algorithms.
+Particularly, there is an implementation of
+Murmur3\_32, 
+Murmur3\_x64\_128,
+and XXHash32.
+
+[Guava](https://guava.dev/)
+has a package [`com.google.common.hash`](
+https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/hash/Hashing.html)
+with 
+Murmur3\_32,
+Murmur3\_x64\_128,
+and SipHash-2-4.

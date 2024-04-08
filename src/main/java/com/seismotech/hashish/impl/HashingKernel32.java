@@ -2,11 +2,11 @@ package com.seismotech.hashish.impl;
 
 import com.seismotech.hashish.util.Bits;
 import com.seismotech.hashish.api.Hashing;
-import com.seismotech.hashish.api.Kernel64;
+import com.seismotech.hashish.api.Kernel32;
 
-public abstract class HashingKernel64 implements Hashing {
+public abstract class HashingKernel32 implements Hashing {
 
-  protected abstract Kernel64 newKernel();
+  protected abstract Kernel32 newKernel();
 
   @Override
   public long hash(byte x) {
@@ -23,34 +23,38 @@ public abstract class HashingKernel64 implements Hashing {
     return integral(Bits.ushort(x), 2);
   }
 
-  @Override
-  public long hash(int x) {
-    return integral(Bits.uint(x), 4);
-  }
-
-  private long integral(long x, int taillen) {
-    final Kernel64 kernel = newKernel();
+  private long integral(int x, int taillen) {
+    final Kernel32 kernel = newKernel();
     kernel.tail(x, taillen, taillen);
     return kernel.hash64();
   }
 
   @Override
-  public long hash(long x) {
-    final Kernel64 kernel = newKernel();
+  public long hash(int x) {
+    final Kernel32 kernel = newKernel();
     kernel.block(x);
+    kernel.tail(0, 0, 4);
+    return kernel.hash64();
+  }
+
+  @Override
+  public long hash(long x) {
+    final Kernel32 kernel = newKernel();
+    kernel.block((int) x);
+    kernel.block((int) (x >>> 32));
     kernel.tail(0, 0, 8);
     return kernel.hash64();
   }
 
   @Override
   public long hash(byte[] xs, int off, int len) {
-    final Kernel64 kernel = newKernel();
-    final int blockno = len / 8;
+    final Kernel32 kernel = newKernel();
+    final int blockno = len / 4;
     for (int i = 0; i < blockno; i++) {
-      kernel.block(Bits.le64(xs, off + 8*i));
+      kernel.block(Bits.le32(xs, off + 4*i));
     }
-    final int taillen = len - 8*blockno;
-    kernel.tail(Bits.tailLE64(xs, off + 8*blockno, taillen), taillen, len);
+    final int taillen = len - 4*blockno;
+    kernel.tail(Bits.tailLE32(xs, off + 4*blockno, taillen), taillen, len);
     return kernel.hash64();
   }
 

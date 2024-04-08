@@ -14,6 +14,15 @@ public class Bits {
   public static long uint(int n) {return n & 0xFFFF_FFFFL;}
 
   //----------------------------------------------------------------------
+  // Combination
+
+  public static int low(long n) {return (int) n;}
+  public static int high(long n) {return (int) (n >>> 32);}
+  public static long concat(int high, int low) {
+    return (((long) high) << 32) | uint(low);
+  }
+
+  //----------------------------------------------------------------------
   // Reading from arrays
 
   public static final VarHandle LE32_FROM_BYTES
@@ -23,10 +32,12 @@ public class Bits {
     = MethodHandles.byteArrayViewVarHandle(
       long[].class, ByteOrder.LITTLE_ENDIAN);
 
-  public static long tailLE64(byte[] xs, int off, int len) {
-    return (len < 3) ? tailLE32(xs, off, len)
-      : (uint((int) LE32_FROM_BYTES.get(xs, off))
-          | uint(tailLE32(xs, off+4, len-4)) << 32);
+  public static int le32(byte[] xs, int off) {
+    return (int) Bits.LE32_FROM_BYTES.get(xs, off);
+  }
+
+  public static long le64(byte[] xs, int off) {
+    return (long) Bits.LE64_FROM_BYTES.get(xs, off);
   }
 
   public static int tailLE32(byte[] xs, int off, int len) {
@@ -38,6 +49,12 @@ public class Bits {
     case 0: return tail;
     }
     return tailLE32IllegalLength(len);
+  }
+
+  public static long tailLE64(byte[] xs, int off, int len) {
+    return (len < 4) ? tailLE32(xs, off, len)
+      : (uint((int) LE32_FROM_BYTES.get(xs, off))
+          | (uint(tailLE32(xs, off+4, len-4)) << 32));
   }
 
   private static int tailLE32IllegalLength(final int len) {

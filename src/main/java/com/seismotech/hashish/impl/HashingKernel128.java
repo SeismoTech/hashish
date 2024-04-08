@@ -2,11 +2,11 @@ package com.seismotech.hashish.impl;
 
 import com.seismotech.hashish.util.Bits;
 import com.seismotech.hashish.api.Hashing;
-import com.seismotech.hashish.api.Kernel64;
+import com.seismotech.hashish.api.Kernel128;
 
-public abstract class HashingKernel64 implements Hashing {
+public abstract class HashingKernel128 implements Hashing {
 
-  protected abstract Kernel64 newKernel();
+  protected abstract Kernel128 newKernel();
 
   @Override
   public long hash(byte x) {
@@ -28,29 +28,35 @@ public abstract class HashingKernel64 implements Hashing {
     return integral(Bits.uint(x), 4);
   }
 
-  private long integral(long x, int taillen) {
-    final Kernel64 kernel = newKernel();
-    kernel.tail(x, taillen, taillen);
-    return kernel.hash64();
-  }
-
   @Override
   public long hash(long x) {
-    final Kernel64 kernel = newKernel();
-    kernel.block(x);
-    kernel.tail(0, 0, 8);
+    return integral(x, 8);
+  }
+
+  private long integral(long x, int taillen) {
+    final Kernel128 kernel = newKernel();
+    kernel.tail(0, x, taillen, taillen);
     return kernel.hash64();
   }
 
   @Override
   public long hash(byte[] xs, int off, int len) {
-    final Kernel64 kernel = newKernel();
-    final int blockno = len / 8;
+    final Kernel128 kernel = newKernel();
+    final int blockno = len / 16;
     for (int i = 0; i < blockno; i++) {
-      kernel.block(Bits.le64(xs, off + 8*i));
+      kernel.block(Bits.le64(xs, off + 16*i), Bits.le64(xs, off + 16*i + 8));
     }
-    final int taillen = len - 8*blockno;
-    kernel.tail(Bits.tailLE64(xs, off + 8*blockno, taillen), taillen, len);
+    final int tailoff = 16*blockno;
+    final int taillen = len - tailoff;
+    final long low, high;
+    if (8 <= taillen) {
+      low = Bits.le64(xs, off + tailoff);
+      high = Bits.tailLE64(xs, off + tailoff + 8, taillen-8);
+    } else {
+      low = Bits.tailLE64(xs, off + tailoff, taillen);
+      high = 0;
+    }
+    kernel.tail(low, high, taillen, len);
     return kernel.hash64();
   }
 

@@ -1,5 +1,6 @@
 package com.seismotech.hashish.test;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class GCObserverTest {
