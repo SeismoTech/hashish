@@ -19,7 +19,7 @@ package com.seismotech.hashish.impl.murmur3;
  *   and produces a 128 bits hash value.
  *
  * <p><b>Endianness</b>
- * In the reference implementation doesn't specify the correct endianness,
+ * The reference implementation doesn't specify the correct endianness,
  * although it says
  * <i>if your platform needs to do endian-swapping or can only handle aligned
  * reads, do the conversion here</i>.

@@ -91,13 +91,13 @@ class SipTest {
         final JavaClass preKernel
           = preHeap.getJavaClassByName(SipHashKernel._2_4.class.getName());
         final long preKernelNo = preKernel.getInstancesCount();
-        System.err.println("Pre instances: " + preKernelNo);
+        //System.err.println("Pre instances: " + preKernelNo);
 
         final Heap postHeap = postDump.heap();
         final JavaClass postKernel
           = postHeap.getJavaClassByName(SipHashKernel._2_4.class.getName());
         final long postKernelNo = postKernel.getInstancesCount();
-        System.err.println("Post instances: " + postKernelNo);
+        //System.err.println("Post instances: " + postKernelNo);
 
         assertThat(preKernelNo, greaterThan(0L));
         assertEquals(1, postKernelNo - preKernelNo);

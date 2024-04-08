@@ -23,24 +23,20 @@ public class AllByteArrayBenchmark {
 
   @State(Scope.Thread)
   public static class Context {
-    @Param({"4", /*"16", "256", "65536",*/ "1048576"})
+    @Param({"4", "16", "256", "65536", "1048576"})
     public int size;
 
-    final Adler32 staticAdler
-      = new Adler32();
+    final Adler32 nativeAdler = new Adler32();
 
-    final SipHashing staticSip
+    final HashFunction guavaMurmur32 = Hashing.murmur3_32_fixed(0);
+    final HashFunction guavaMurmur128x64 = Hashing.murmur3_128(0);
+    final Murmur32Hashing murmur32 = new Murmur32Hashing(0);
+    final Murmur128x32Hashing murmur128x32 = new Murmur128x32Hashing(0);
+    final Murmur128x64Hashing murmur128x64 = new Murmur128x64Hashing(0);
+
+    final SipHashing sip
       = new SipHashing._2_4(0x0706050403020100L, 0x0f0e0d0c0b0a0908L);
-
-    final HashFunction staticGuavaMurmur128x64
-      = Hashing.murmur3_128(0);
-    final Murmur32Hashing staticMurmur32
-      = new Murmur32Hashing(0);
-    final Murmur128x32Hashing staticMurmur128x32
-      = new Murmur128x32Hashing(0);
-    final Murmur128x64Hashing staticMurmur128x64
-      = new Murmur128x64Hashing(0);
-
+    
     public byte[] data;
 
     @Setup(Level.Iteration)
@@ -50,53 +46,58 @@ public class AllByteArrayBenchmark {
     }
   }
 
-  //@Benchmark
+  @Benchmark
   public long staticNativeAdler(Context ctx) {
-    ctx.staticAdler.reset();
-    ctx.staticAdler.update(ctx.data);
-    return ctx.staticAdler.getValue();
+    ctx.nativeAdler.reset();
+    ctx.nativeAdler.update(ctx.data);
+    return ctx.nativeAdler.getValue();
   }
 
-  //@Benchmark
+  @Benchmark
   public long dynamicNativeAdler(Context ctx) {
     final Adler32 adler = new Adler32();
     adler.update(ctx.data);
     return adler.getValue();
   }
 
-  //@Benchmark
-  public long sip(Context ctx) {
-    return ctx.staticSip.hash(ctx.data);
+  @Benchmark
+  public long staticSip(Context ctx) {
+    return ctx.sip.hash(ctx.data);
   }
 
-  //@Benchmark
+  @Benchmark
   public long adler8(Context ctx) {
     return AdlerHashing8.THE.hash(ctx.data);
   }
 
-  //@Benchmark
+  @Benchmark
   public long adler8X(Context ctx) {
     return AdlerHashing8X.THE.hash(ctx.data);
   }
 
-  //@Benchmark
+  @Benchmark
   public long adler8Vector(Context ctx) {
     return AdlerHashing8Vector.THE.hash(ctx.data);
   }
 
-  //@Benchmark
+  @Benchmark
   public int apacheMurmur32(Context ctx) {
     return MurmurHash3.hash32x86(ctx.data);
   }
 
-  //@Benchmark
-  public long murmur32(Context ctx) {
-    return ctx.staticMurmur32.hash(ctx.data);
+  @Benchmark
+  public HashCode staticGuavaMurmur32(Context ctx) {
+    return ctx.guavaMurmur32.hashBytes(ctx.data);
   }
 
-  //@Benchmark
-  public long murmur128x32(Context ctx) {
-    return ctx.staticMurmur128x32.hash(ctx.data);
+  @Benchmark
+  public long staticMurmur32(Context ctx) {
+    return ctx.murmur32.hash(ctx.data);
+  }
+
+  @Benchmark
+  public long staticMurmur128x32(Context ctx) {
+    return ctx.murmur128x32.hash(ctx.data);
   }
 
   @Benchmark
@@ -105,12 +106,12 @@ public class AllByteArrayBenchmark {
   }
 
   @Benchmark
-  public HashCode guavaMurmur128x64(Context ctx) {
-    return ctx.staticGuavaMurmur128x64.hashBytes(ctx.data);
+  public HashCode staticGuavaMurmur128x64(Context ctx) {
+    return ctx.guavaMurmur128x64.hashBytes(ctx.data);
   }
 
   @Benchmark
-  public long murmur128x64(Context ctx) {
-    return ctx.staticMurmur128x64.hash(ctx.data);
+  public long staticMurmur128x64(Context ctx) {
+    return ctx.murmur128x64.hash(ctx.data);
   }
 }

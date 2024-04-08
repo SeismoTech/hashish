@@ -28,7 +28,6 @@ class MurmurTest {
           final long tsetnoc = Long.reverseBytes(contest);
           final int expected = MurmurHash3.hash32(tsetnoc, seed);
           final int computed = (int) murmur.hash(contest);
-          //System.err.println(expected + " ~ " + computed);
           assertEquals(expected, computed);
         }
       }
@@ -45,7 +44,6 @@ class MurmurTest {
           final int n = gen.randomFill(contest);
           final int expected = MurmurHash3.hash32x86(contest, 0, n, seed);
           final int computed = (int) murmur.hash(contest, 0, n);
-          //System.err.println(expected + " ~ " + computed);
           assertEquals(expected, computed);
         }
       }
@@ -66,7 +64,6 @@ class MurmurTest {
           final long[] apache = MurmurHash3.hash128x64(contest, 0, n, seed);
           final long expected = apache[0] ^ apache[1];
           final long computed = murmur.hash(contest, 0, n);
-          //System.err.println(expected + " ~ " + computed);
           assertEquals(expected, computed);
         }
       }
@@ -85,11 +82,7 @@ class MurmurTest {
         new Murmur128x64Hashing(seed),
       };
       for (int len = 0; len <= verse.length; len++) {
-        // System.err.println("len: " + len);
         for (int ihash = 0; ihash < hashing.length; ihash++) {
-          // System.err.println(
-          //   MurmurTestData.EXPECTED[len][i]
-          //   + " ~ " + hashing[i].hash(verse, 0, len));
           assertEquals(
             MurmurTestData.EXPECTED[len][iseed][ihash],
             hashing[ihash].hash(verse, 0, len));

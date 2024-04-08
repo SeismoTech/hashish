@@ -54,7 +54,6 @@ class AdlerTest {
     ref.update(bs, 0, len);
     final long expected = ref.getValue();
     final long computed = hashing.hash(bs, 0, len);
-    //System.err.println(n + " -> " + expected + " ~ " + computed);
     assertEquals(expected, computed);
   }
 }
