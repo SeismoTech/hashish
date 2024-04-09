@@ -20,6 +20,7 @@ import com.seismotech.hashish.impl.murmur3.Murmur32Hashing;
 import com.seismotech.hashish.impl.murmur3.Murmur128x32Hashing;
 import com.seismotech.hashish.impl.murmur3.Murmur128x64Hashing;
 import com.seismotech.hashish.impl.xx.XX32Hashing;
+import com.seismotech.hashish.impl.xx.XX64Hashing;
 import com.seismotech.hashish.impl.sip.SipHashing;
 
 @Fork(value = 1)
@@ -29,7 +30,7 @@ public class AllByteArrayBenchmark {
 
   @State(Scope.Thread)
   public static class Context {
-    @Param({"4", /*"16", "256", "65536",*/ "1048576"})
+    @Param({"3", /*"4", "16",*/ "31", /*"256", "65536", "1048576",*/ "1048607"})
     public int size;
 
     final Adler32 nativeAdler = new Adler32();
@@ -42,7 +43,9 @@ public class AllByteArrayBenchmark {
     final Murmur128x64Hashing murmur128x64 = new Murmur128x64Hashing(0);
 
     final XXHash32 apacheXX32 = new XXHash32(0);
+    final LongHashFunction ohftXX64 = LongHashFunction.xx(0);
     final XX32Hashing xx32 = new XX32Hashing(0);
+    final XX64Hashing xx64 = new XX64Hashing(0);
 
     final SipHashing sip
       = new SipHashing._2_4(0x0706050403020100L, 0x0f0e0d0c0b0a0908L);
@@ -135,6 +138,16 @@ public class AllByteArrayBenchmark {
   //@Benchmark
   public long staticXX32(Context ctx) {
     return ctx.xx32.hash(ctx.data);
+  }
+
+  @Benchmark
+  public long staticOHFTXX64(Context ctx) {
+    return ctx.ohftXX64.hashBytes(ctx.data);
+  }
+
+  @Benchmark
+  public long staticXX64(Context ctx) {
+    return ctx.xx64.hash(ctx.data);
   }
 
   //@Benchmark

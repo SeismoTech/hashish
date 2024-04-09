@@ -13,7 +13,8 @@ public class XX32Kernel implements Kernel128 {
   static final int PRIME32_4 = 0x27D4EB2F;
   static final int PRIME32_5 = 0x165667B1;
 
-  private int acc1, acc2, acc3, acc4, acc;
+  private int acc1, acc2, acc3, acc4;
+  private int acc;
 
   public XX32Kernel(int seed) {
     this.acc1 = seed + PRIME32_1 + PRIME32_2;

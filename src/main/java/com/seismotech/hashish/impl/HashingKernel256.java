@@ -2,11 +2,11 @@ package com.seismotech.hashish.impl;
 
 import com.seismotech.hashish.util.Bits;
 import com.seismotech.hashish.api.Hashing;
-import com.seismotech.hashish.api.Kernel128;
+import com.seismotech.hashish.api.Kernel256;
 
-public abstract class HashingKernel128 implements Hashing {
+public abstract class HashingKernel256 implements Hashing {
 
-  protected abstract Kernel128 newKernel();
+  protected abstract Kernel256 newKernel();
 
   @Override
   public long hash(byte x) {
@@ -34,29 +34,46 @@ public abstract class HashingKernel128 implements Hashing {
   }
 
   private long integral(long x, int taillen) {
-    final Kernel128 kernel = newKernel();
-    kernel.tail(x, 0, taillen, taillen);
+    final Kernel256 kernel = newKernel();
+    kernel.tail(x, 0, 0, 0, taillen, taillen);
     return kernel.hash64();
   }
 
   @Override
   public long hash(byte[] xs, int off, int len) {
-    final Kernel128 kernel = newKernel();
-    final int blockno = len / 16;
+    final Kernel256 kernel = newKernel();
+    final int blockno = len / 32;
     for (int i = 0; i < blockno; i++) {
-      kernel.block(Bits.le64(xs, off + 16*i), Bits.le64(xs, off + 16*i + 8));
+      final int init = off + 32*i;
+      kernel.block(
+        Bits.le64(xs, init),
+        Bits.le64(xs, init + 8),
+        Bits.le64(xs, init + 16),
+        Bits.le64(xs, init + 24));
     }
-    final int tailoff = 16*blockno;
-    final int taillen = len - tailoff;
-    final long low, high;
-    if (8 <= taillen) {
-      low = Bits.le64(xs, off + tailoff);
-      high = Bits.tailLE64(xs, off + tailoff + 8, taillen-8);
+    final int taillen = len - 32*blockno;
+    final int tailinit = off + 32*blockno;
+    //Ideal place to use an array.
+    //But the usage pattern is too complex and only Graal EE
+    //is able to do Scalar Replacement
+    long b0 = 0, b1 = 0, b2 = 0, b3 = 0;
+    if (taillen < 8) {
+      b0 = Bits.tailLE64(xs, tailinit, taillen);
     } else {
-      low = Bits.tailLE64(xs, off + tailoff, taillen);
-      high = 0;
+      b0 = Bits.le64(xs, tailinit);
+      if (taillen < 16) {
+        b1 = Bits.tailLE64(xs, tailinit + 8, taillen-8);
+      } else {
+        b1 = Bits.le64(xs, tailinit + 8);
+        if (taillen < 24) {
+          b2 = Bits.tailLE64(xs, tailinit + 16, taillen-16);
+        } else {
+          b2 = Bits.le64(xs, tailinit + 16);
+          b3 = Bits.tailLE64(xs, tailinit + 24, taillen-24);
+        }
+      }
     }
-    kernel.tail(low, high, taillen, len);
+    kernel.tail(b0, b1, b2, b3, taillen, len);
     return kernel.hash64();
   }
 

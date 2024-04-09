@@ -57,6 +57,7 @@ jmh {
   //-Pjmhinc=AdlerBenchmark
   if (rootProject.hasProperty('jmhinc')) {
     includes = [jmhinc]
+    profilers = ["gc"]
   }
   jvmArgs = [
     '--enable-preview',
