@@ -26,9 +26,11 @@ public interface Hashing {
 
   long hash(byte[] xs, int off, int len);
 
-  // long hash(char[] xs);
+  default long hash(char[] xs) {
+    return hash(xs, 0, xs.length);
+  }
 
-  // long hash(char[] xs, int off, int len);
+  long hash(char[] xs, int off, int len);
 
   // long hash(short[] xs);
 

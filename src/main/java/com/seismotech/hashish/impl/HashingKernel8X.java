@@ -54,7 +54,7 @@ public abstract class HashingKernel8X implements Hashing {
     final Kernel8X kernel = newKernel();
     final int blockno = len / 8;
     for (int i = 0; i < blockno; i++) {
-      kernel.block((long) Bits.LE64_FROM_BYTES.get(xs, off + 8*i));
+      kernel.block((long) Bits.le64(xs, off + 8*i));
     }
     final int taillen = len - 8*blockno;
     kernel.block(xs, off + 8*blockno, taillen);
@@ -72,6 +72,20 @@ public abstract class HashingKernel8X implements Hashing {
     final int taillen = len - blockno*blocksize;
     kernel.block(xs, off + blockno*blocksize, taillen);
     kernel.finish(len);
+    return kernel.hash64();
+  }
+
+  public long hash(char[] xs, int off, int len) {
+    final int W = 4;
+    final Kernel8X kernel = newKernel();
+    final int blockno = len / W;
+    for (int i = 0; i < blockno; i++) {
+      kernel.block(Bits.le64(xs, off + W*i));
+    }
+    for (int i = W*blockno; i < len; i++) {
+      kernel.block((short) xs[i]);
+    }
+    kernel.finish(2*len);
     return kernel.hash64();
   }
 }

@@ -38,7 +38,12 @@ public class Contester {
   }
 
   public int randomFill(byte[] bs, int min, int max) {
-    final int n = (min == max) ? max : (min + rnd.nextInt(max-min+1));
+    return randomFill(bs, min, max, 1);
+  }
+
+  public int randomFill(byte[] bs, int min, int max, int by) {
+    final int n = (min == max) ? max
+      : (min + by*rnd.nextInt((max-min+1)/by));
     if (n == bs.length || bs.length < BUFFER_SIZE) rnd.nextBytes(bs);
     else {
       final byte[] tmp = buffer();

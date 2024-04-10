@@ -41,28 +41,47 @@ public abstract class HashingKernel128 implements Hashing {
 
   @Override
   public long hash(byte[] xs, int off, int len) {
+    final int W = 16;
     final Kernel128 kernel = newKernel();
-    final int blockno = len / 16;
+    final int blockno = len / W;
     for (int i = 0; i < blockno; i++) {
-      kernel.block(Bits.le64(xs, off + 16*i), Bits.le64(xs, off + 16*i + 8));
+      kernel.block(Bits.le64(xs, off + W*i), Bits.le64(xs, off + W*i + W/2));
     }
-    final int tailoff = 16*blockno;
-    final int taillen = len - tailoff;
+    final int tailoff = off + W*blockno;
+    final int taillen = len - W*blockno;
     final long low, high;
-    if (8 <= taillen) {
-      low = Bits.le64(xs, off + tailoff);
-      high = Bits.tailLE64(xs, off + tailoff + 8, taillen-8);
+    if (W/2 <= taillen) {
+      low = Bits.le64(xs, tailoff);
+      high = Bits.le64tail(xs, tailoff + W/2, taillen - W/2);
     } else {
-      low = Bits.tailLE64(xs, off + tailoff, taillen);
+      low = Bits.le64tail(xs, tailoff, taillen);
       high = 0;
     }
     kernel.tail(low, high, taillen, len);
     return kernel.hash64();
   }
 
-  // long hash(char[] xs);
-
-  // long hash(char[] xs, int off, int len);
+  @Override
+  public long hash(char[] xs, int off, int len) {
+    final int W = 8;
+    final Kernel128 kernel = newKernel();
+    final int blockno = len / W;
+    for (int i = 0; i < blockno; i++) {
+      kernel.block(Bits.le64(xs, off + W*i), Bits.le64(xs, off + W*i + W/2));
+    }
+    final int tailoff = off + W*blockno;
+    final int taillen = len - W*blockno;
+    final long low, high;
+    if (4 <= taillen) {
+      low = Bits.le64(xs, tailoff);
+      high = Bits.le64tail(xs, tailoff + W/2, taillen - W/2);
+    } else {
+      low = Bits.le64tail(xs, tailoff, taillen);
+      high = 0;
+    }
+    kernel.tail(low, high, 2*taillen, 2*len);
+    return kernel.hash64();
+  }
 
   // long hash(short[] xs);
 

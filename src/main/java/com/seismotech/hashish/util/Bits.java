@@ -40,7 +40,7 @@ public class Bits {
     return (long) Bits.LE64_FROM_BYTES.get(xs, off);
   }
 
-  public static int tailLE32(byte[] xs, int off, int len) {
+  public static int le32tail(byte[] xs, int off, int len) {
     int tail = 0;
     switch (len) {
     case 3: tail |= ubyte(xs[off+2]) << 16;
@@ -48,18 +48,46 @@ public class Bits {
     case 1: tail |= ubyte(xs[off]);
     case 0: return tail;
     }
-    return tailLE32IllegalLength(len);
+    return tailIllegalLength(3, len);
   }
 
-  public static long tailLE64(byte[] xs, int off, int len) {
-    return (len < 4) ? tailLE32(xs, off, len)
+  public static long le64tail(byte[] xs, int off, int len) {
+    return (len < 4) ? le32tail(xs, off, len)
       : (uint((int) LE32_FROM_BYTES.get(xs, off))
-          | (uint(tailLE32(xs, off+4, len-4)) << 32));
+          | (uint(le32tail(xs, off+4, len-4)) << 32));
   }
 
-  private static int tailLE32IllegalLength(final int len) {
+  public static int le32(char[] xs, int off) {
+    return xs[off] | (xs[off+1] << 16);
+  }
+
+  public static int le32tail(char[] xs, int off, int len) {
+    int tail = 0;
+    switch (len) {
+    case 1: tail = xs[off];
+    case 0: return tail;
+    }
+    return tailIllegalLength(1, len);
+  }
+
+  public static long le64(char[] xs, int off) {
+    return uint(le32(xs,off)) | (uint(le32(xs,off+2)) << 32);
+  }
+
+  public static long le64tail(char[] xs, int off, int len) {
+    long tail = 0;
+    switch (len) {
+    case 3: tail = ((long) xs[off+2]) << 32;
+    case 2: tail |= ((long) xs[off+1]) << 16;
+    case 1: tail |= xs[off];
+    case 0: return tail;
+    }
+    return tailIllegalLength(3, len);
+  }
+
+  private static int tailIllegalLength(int max, int len) {
     throw new IllegalArgumentException(
-      "`tailLE32` called with tail length " + len
-      + ", but a value in the range [0,3] expected");
+      "A tail scanner called with tail length " + len
+      + ", but a value in the range [0," + max + "] expected");
   }
 }

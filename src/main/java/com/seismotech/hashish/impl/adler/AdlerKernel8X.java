@@ -13,11 +13,29 @@ public class AdlerKernel8X extends AdlerKernel8 implements Kernel8X {
   public Kernel8X clone() {return new AdlerKernel8X(this);}
 
   @Override
-  public void block(short v) {
+  public void block(short block) {
+    final int
+      d0 = block & 0xFF,
+      d1 = (block >>> 8) & 0xFF;
+    int a0 = a, b0 = b;
+    a0 += d0; b0 += a0;
+    a0 += d1; b0 += a0;
+    a = Adler.chop(a0); b = Adler.chop(b0);
   }
 
   @Override
-  public void block(int v) {
+  public void block(int block) {
+    final int
+      d0 = (int) (block & 0xFF),
+      d1 = (int) ((block >>> 8) & 0xFF),
+      d2 = (int) ((block >>> 16) & 0xFF),
+      d3 = (int) ((block >>> 24) & 0xFF);
+    int a0 = a, b0 = b;
+    a0 += d0; b0 += a0;
+    a0 += d1; b0 += a0;
+    a0 += d2; b0 += a0;
+    a0 += d3; b0 += a0;
+    a = Adler.chop(a0); b = Adler.chop(b0);
   }
 
   @Override
@@ -29,7 +47,8 @@ public class AdlerKernel8X extends AdlerKernel8 implements Kernel8X {
    * A loop unrolling approach.
    */
   private void block0(long block) {
-    final int d0 = (int) (block & 0xFF),
+    final int
+      d0 = (int) (block & 0xFF),
       d1 = (int) ((block >>> 8) & 0xFF),
       d2 = (int) ((block >>> 16) & 0xFF),
       d3 = (int) ((block >>> 24) & 0xFF),

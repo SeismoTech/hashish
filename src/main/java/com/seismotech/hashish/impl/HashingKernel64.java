@@ -44,19 +44,29 @@ public abstract class HashingKernel64 implements Hashing {
 
   @Override
   public long hash(byte[] xs, int off, int len) {
+    final int W = 8;
     final Kernel64 kernel = newKernel();
-    final int blockno = len / 8;
+    final int blockno = len / W;
     for (int i = 0; i < blockno; i++) {
-      kernel.block(Bits.le64(xs, off + 8*i));
+      kernel.block(Bits.le64(xs, off + W*i));
     }
-    final int taillen = len - 8*blockno;
-    kernel.tail(Bits.tailLE64(xs, off + 8*blockno, taillen), taillen, len);
+    final int taillen = len - W*blockno;
+    kernel.tail(Bits.le64tail(xs, off + W*blockno, taillen), taillen, len);
     return kernel.hash64();
   }
 
-  // long hash(char[] xs);
-
-  // long hash(char[] xs, int off, int len);
+  @Override
+  public long hash(char[] xs, int off, int len) {
+    final int W = 4;
+    final Kernel64 kernel = newKernel();
+    final int blockno = len / W;
+    for (int i = 0; i < blockno; i++) {
+      kernel.block(Bits.le64(xs, off + W*i));
+    }
+    final int taillen = len - W*blockno;
+    kernel.tail(Bits.le64tail(xs, off + W*blockno, taillen), 2*taillen, 2*len);
+    return kernel.hash64();
+  }
 
   // long hash(short[] xs);
 
