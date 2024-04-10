@@ -83,27 +83,25 @@ public abstract class HashingKernel128 implements Hashing {
     return kernel.hash64();
   }
 
-  // long hash(short[] xs);
-
-  // long hash(short[] xs, int off, int len);
-
-  // long hash(int[] xs);
-
-  // long hash(int[] xs, int off, int len);
-
-  // long hash(long[] xs);
-
-  // long hash(long[] xs, int off, int len);
-
-  // long hash(float[] xs);
-
-  // long hash(float[] xs, int off, int len);
-
-  // long hash(double[] xs);
-
-  // long hash(double[] xs, int off, int len);
-
-  // long hash(String xs);
-
-  // long hash(String xs, int off, int len);
+  @Override
+  public long hash(String xs, int off, int len) {
+    final int W = 8;
+    final Kernel128 kernel = newKernel();
+    final int blockno = len / W;
+    for (int i = 0; i < blockno; i++) {
+      kernel.block(Bits.le64(xs, off + W*i), Bits.le64(xs, off + W*i + W/2));
+    }
+    final int tailoff = off + W*blockno;
+    final int taillen = len - W*blockno;
+    final long low, high;
+    if (4 <= taillen) {
+      low = Bits.le64(xs, tailoff);
+      high = Bits.le64tail(xs, tailoff + W/2, taillen - W/2);
+    } else {
+      low = Bits.le64tail(xs, tailoff, taillen);
+      high = 0;
+    }
+    kernel.tail(low, high, 2*taillen, 2*len);
+    return kernel.hash64();
+  }
 }

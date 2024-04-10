@@ -75,4 +75,16 @@ public abstract class HashingKernel8 implements Hashing {
     kernel.finish(2*len);
     return kernel.hash64();
   }
+
+  @Override
+  public long hash(String xs, int off, int len) {
+    final Kernel8 kernel = newKernel();
+    for (int i = 0; i < len; i++) {
+      final char x = xs.charAt(i);
+      kernel.block((byte) x);
+      kernel.block((byte) (x >>> 8));
+    }
+    kernel.finish(2*len);
+    return kernel.hash64();
+  }
 }

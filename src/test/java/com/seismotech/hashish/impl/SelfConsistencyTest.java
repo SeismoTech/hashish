@@ -76,7 +76,7 @@ class SelfConsistencyTest {
 
   @ParameterizedTest
   @MethodSource("hashings")
-  void consistentOnChars(Hashing hashing) {
+  void consistentOnCharsAndString(Hashing hashing) {
     final Contester contester = new Contester();
     final byte[] bs = new byte[64*1024];
     final char[] xs = new char[bs.length/2];
@@ -84,7 +84,9 @@ class SelfConsistencyTest {
       final int n = contester.randomFill(bs, 0, bs.length, 2);
       final CharBuffer buf = buffer(bs, n).asCharBuffer();
       buf.get(xs, 0, n/2);
-      assertEquals(hashing.hash(bs,0,n), hashing.hash(xs,0,n/2));
+      final long expected = hashing.hash(bs,0,n);
+      assertEquals(expected, hashing.hash(xs,0,n/2));
+      assertEquals(expected, hashing.hash(new String(xs,0,n/2)));
     }
   }
 

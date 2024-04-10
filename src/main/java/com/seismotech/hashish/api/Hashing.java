@@ -32,6 +32,12 @@ public interface Hashing {
 
   long hash(char[] xs, int off, int len);
 
+  default long hash(String xs) {
+    return hash(xs, 0, xs.length());
+  }
+
+  long hash(String xs, int off, int len);
+
   // long hash(short[] xs);
 
   // long hash(short[] xs, int off, int len);
@@ -51,8 +57,4 @@ public interface Hashing {
   // long hash(double[] xs);
 
   // long hash(double[] xs, int off, int len);
-
-  // long hash(String xs);
-
-  // long hash(String xs, int off, int len);
 }

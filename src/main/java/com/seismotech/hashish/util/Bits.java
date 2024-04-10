@@ -70,6 +70,19 @@ public class Bits {
     return tailIllegalLength(1, len);
   }
 
+  public static int le32(String xs, int off) {
+    return xs.charAt(off) | (xs.charAt(off+1) << 16);
+  }
+
+  public static int le32tail(String xs, int off, int len) {
+    int tail = 0;
+    switch (len) {
+    case 1: tail = xs.charAt(off);
+    case 0: return tail;
+    }
+    return tailIllegalLength(1, len);
+  }
+
   public static long le64(char[] xs, int off) {
     return uint(le32(xs,off)) | (uint(le32(xs,off+2)) << 32);
   }
@@ -80,6 +93,21 @@ public class Bits {
     case 3: tail = ((long) xs[off+2]) << 32;
     case 2: tail |= ((long) xs[off+1]) << 16;
     case 1: tail |= xs[off];
+    case 0: return tail;
+    }
+    return tailIllegalLength(3, len);
+  }
+
+  public static long le64(String xs, int off) {
+    return uint(le32(xs,off)) | (uint(le32(xs,off+2)) << 32);
+  }
+
+  public static long le64tail(String xs, int off, int len) {
+    long tail = 0;
+    switch (len) {
+    case 3: tail = ((long) xs.charAt(off+2)) << 32;
+    case 2: tail |= ((long) xs.charAt(off+1)) << 16;
+    case 1: tail |= xs.charAt(off);
     case 0: return tail;
     }
     return tailIllegalLength(3, len);
