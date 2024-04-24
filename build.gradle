@@ -1,8 +1,8 @@
 plugins {
+  id 'java-library'
+  id 'maven-publish'
   id 'me.champeau.jmh' version '0.7.2'
 }
-
-apply plugin: 'java'
 
 repositories {
   mavenCentral()
@@ -54,7 +54,7 @@ test {
 }
 
 jmh {
-  //-Pjmhinc=AdlerBenchmark
+  //-Pjmhinc=XXXBenchmark
   if (rootProject.hasProperty('jmhinc')) {
     includes = [jmhinc]
     profilers = ["gc"]
@@ -63,4 +63,13 @@ jmh {
     '--enable-preview',
     '--add-modules=jdk.incubator.vector',
   ]
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = project.name
+      from components.java
+    }
+  }
 }
