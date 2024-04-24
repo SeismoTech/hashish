@@ -33,11 +33,11 @@ public class Bits {
       long[].class, ByteOrder.LITTLE_ENDIAN);
 
   public static int le32(byte[] xs, int off) {
-    return (int) Bits.LE32_FROM_BYTES.get(xs, off);
+    return (int) LE32_FROM_BYTES.get(xs, off);
   }
 
   public static long le64(byte[] xs, int off) {
-    return (long) Bits.LE64_FROM_BYTES.get(xs, off);
+    return (long) LE64_FROM_BYTES.get(xs, off);
   }
 
   public static int le32tail(byte[] xs, int off, int len) {
