@@ -115,7 +115,6 @@ class SelfConsistencyTest {
     final ByteBuffer bb = buffer(bs, bs.length);
     for (int i = 0; i < 2000; i++) {
       final int n = contester.randomFill(bs, 0, bs.length);
-      //System.err.println("Size: " + n);
       bb.position(0).limit(n);
       final long expected = hashing.hash(bs,0,n);
       final Hasher her = hashing.hasher();
@@ -123,7 +122,6 @@ class SelfConsistencyTest {
         final int rem = bb.remaining();
         final int m = contester.choose(rem);
         final int disc = contester.choose(8);
-        //System.err.println("  Disc: " + disc + ", " + m + " of " + rem);
         switch (disc) {
         case 7:
         case 6: {
