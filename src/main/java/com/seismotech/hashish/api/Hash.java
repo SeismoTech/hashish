@@ -1,6 +1,6 @@
 package com.seismotech.hashish.api;
 
-import com.seismotech.hashish.util.Bits;
+import com.seismotech.ground.util.Bits;
 
 public interface Hash {
   default int hash32() {return (int) hash64();}

@@ -1,12 +1,18 @@
 package com.seismotech.hashish.impl;
 
-import com.seismotech.hashish.util.Bits;
+import com.seismotech.ground.util.Bits;
+import com.seismotech.hashish.api.Hasher;
 import com.seismotech.hashish.api.Hashing;
 import com.seismotech.hashish.api.Kernel8;
 
 public abstract class HashingKernel8 implements Hashing {
 
   protected abstract Kernel8 newKernel();
+
+  @Override
+  public Hasher hasher() {
+    return new HasherKernel8(newKernel());
+  }
 
   @Override
   public long hash(byte x) {
@@ -17,26 +23,17 @@ public abstract class HashingKernel8 implements Hashing {
   }
 
   @Override
-  public long hash(char x) {
+  public long hash(short x) {
     final Kernel8 kernel = newKernel();
-    kernel.block((byte) x);
-    kernel.block((byte) (x >> 8));
+    kernel.add(x);
     kernel.finish(2);
     return kernel.hash64();
   }
 
   @Override
-  public long hash(short x) {
-    return hash((char) x);
-  }
-
-  @Override
   public long hash(int x) {
     final Kernel8 kernel = newKernel();
-    kernel.block((byte) x);
-    kernel.block((byte) (x >>> 8));
-    kernel.block((byte) (x >>> 16));
-    kernel.block((byte) (x >>> 24));
+    kernel.add(x);
     kernel.finish(4);
     return kernel.hash64();
   }
@@ -44,14 +41,7 @@ public abstract class HashingKernel8 implements Hashing {
   @Override
   public long hash(long x) {
     final Kernel8 kernel = newKernel();
-    kernel.block((byte) x);
-    kernel.block((byte) (x >>> 8));
-    kernel.block((byte) (x >>> 16));
-    kernel.block((byte) (x >>> 24));
-    kernel.block((byte) (x >>> 32));
-    kernel.block((byte) (x >>> 40));
-    kernel.block((byte) (x >>> 48));
-    kernel.block((byte) (x >>> 56));
+    kernel.add(x);
     kernel.finish(8);
     return kernel.hash64();
   }
@@ -59,7 +49,7 @@ public abstract class HashingKernel8 implements Hashing {
   @Override
   public long hash(byte[] xs, int off, int len) {
     final Kernel8 kernel = newKernel();
-    for (int i = 0; i < len; i++) kernel.block(xs[off+i]);
+    kernel.add(xs, off, len);
     kernel.finish(len);
     return kernel.hash64();
   }
@@ -67,11 +57,7 @@ public abstract class HashingKernel8 implements Hashing {
   @Override
   public long hash(char[] xs, int off, int len) {
     final Kernel8 kernel = newKernel();
-    for (int i = 0; i < len; i++) {
-      final char x = xs[i];
-      kernel.block((byte) x);
-      kernel.block((byte) (x >>> 8));
-    }
+    kernel.add(xs, off, len);
     kernel.finish(2*len);
     return kernel.hash64();
   }
@@ -79,11 +65,7 @@ public abstract class HashingKernel8 implements Hashing {
   @Override
   public long hash(String xs, int off, int len) {
     final Kernel8 kernel = newKernel();
-    for (int i = 0; i < len; i++) {
-      final char x = xs.charAt(i);
-      kernel.block((byte) x);
-      kernel.block((byte) (x >>> 8));
-    }
+    kernel.add(xs, off, len);
     kernel.finish(2*len);
     return kernel.hash64();
   }

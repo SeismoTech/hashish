@@ -1,12 +1,18 @@
 package com.seismotech.hashish.impl;
 
-import com.seismotech.hashish.util.Bits;
+import com.seismotech.ground.util.Bits;
+import com.seismotech.hashish.api.Hasher;
 import com.seismotech.hashish.api.Hashing;
 import com.seismotech.hashish.api.Kernel128;
 
 public abstract class HashingKernel128 implements Hashing {
 
   protected abstract Kernel128 newKernel();
+
+  @Override
+  public Hasher hasher() {
+    return new HasherKernel128(newKernel());
+  }
 
   @Override
   public long hash(byte x) {

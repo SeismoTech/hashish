@@ -22,6 +22,8 @@ public class Contester {
     return buffer;
   }
 
+  public int choose(int n) {return rnd.nextInt(n);}
+
   public int randomInt() {return rnd.nextInt();}
   public long randomLong() {return rnd.nextLong();}
 

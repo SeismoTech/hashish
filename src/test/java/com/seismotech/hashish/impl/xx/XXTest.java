@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.digest.XXHash32;
 import net.openhft.hashing.LongHashFunction;
 
-import com.seismotech.hashish.util.Bits;
 import com.seismotech.hashish.api.Hashing;
 import com.seismotech.hashish.test.Contester;
 

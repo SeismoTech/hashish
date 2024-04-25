@@ -5,15 +5,12 @@ plugins {
 }
 
 repositories {
+  mavenLocal()
   mavenCentral()
-
-  //Could not GET 'https://bits.netbeans.org/maven2/org/netbeans/modules/org-netbeans-lib-profiler/RELEASE802/org-netbeans-lib-profiler-RELEASE802.pom'. Received status code 401 from server: Repository decommissioned. Please refer to https://netbeans.apache.org/about/oracle-transition.html for more information.
-  // maven {
-  //   url "https://bits.netbeans.org/maven2"
-  // }
 }
 
 dependencies {
+  implementation 'com.seismotech:ground:1.0.0-SNAPSHOT'
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
   testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.0'
   testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0'

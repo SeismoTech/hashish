@@ -1,6 +1,6 @@
 package com.seismotech.hashish.impl.adler;
 
-import com.seismotech.hashish.util.Bits;
+import com.seismotech.ground.util.Bits;
 import com.seismotech.hashish.api.Kernel8;
 
 public class AdlerKernel8 implements Kernel8 {
@@ -34,4 +34,9 @@ public class AdlerKernel8 implements Kernel8 {
 
   @Override
   public void finish(long totallen) {}
+
+  @Override
+  public String toString() {
+    return getClass().getName() + "[a=" + a + ", b=" + b + "]";
+  }
 }

@@ -1,6 +1,6 @@
 package com.seismotech.hashish.impl.adler;
 
-import static com.seismotech.hashish.util.Bits.ubyte;
+import static com.seismotech.ground.util.Bits.ubyte;
 import com.seismotech.hashish.api.Kernel8X;
 
 public class AdlerKernel8X extends AdlerKernel8 implements Kernel8X {
@@ -69,7 +69,7 @@ public class AdlerKernel8X extends AdlerKernel8 implements Kernel8X {
   }
 
   /**
-   * This solution tries to benefit from hw parallelism,
+   * This solution tries to use hw parallelism,
    * but it is slower that block0.
    */
   private void block1(long block) {

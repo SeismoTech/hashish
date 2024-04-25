@@ -2,7 +2,7 @@ package com.seismotech.hashish.impl.xx;
 
 import static java.lang.Integer.rotateLeft;
 
-import com.seismotech.hashish.util.Bits;
+import com.seismotech.ground.util.Bits;
 import com.seismotech.hashish.api.Kernel128;
 
 public class XX32Kernel implements Kernel128 {

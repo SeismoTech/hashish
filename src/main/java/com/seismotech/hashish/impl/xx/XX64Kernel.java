@@ -2,7 +2,7 @@ package com.seismotech.hashish.impl.xx;
 
 import static java.lang.Long.rotateLeft;
 
-import com.seismotech.hashish.util.Bits;
+import com.seismotech.ground.util.Bits;
 import com.seismotech.hashish.api.Kernel256;
 
 public class XX64Kernel implements Kernel256 {

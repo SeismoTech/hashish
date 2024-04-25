@@ -2,8 +2,8 @@ package com.seismotech.hashish.impl.adler;
 
 import jdk.incubator.vector.*;
 
-import static com.seismotech.hashish.util.Bits.ubyte;
-import static com.seismotech.hashish.util.Bits.ushort;
+import static com.seismotech.ground.util.Bits.ubyte;
+import static com.seismotech.ground.util.Bits.ushort;
 import com.seismotech.hashish.api.Kernel8X;
 
 /**

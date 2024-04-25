@@ -1,7 +1,7 @@
 package com.seismotech.hashish.impl.murmur3;
 
 import static java.lang.Integer.rotateLeft;
-import com.seismotech.hashish.util.Bits;
+import com.seismotech.ground.util.Bits;
 import com.seismotech.hashish.api.Kernel128;
 
 public class Murmur128x32Kernel implements Kernel128 {
@@ -42,6 +42,12 @@ public class Murmur128x32Kernel implements Kernel128 {
   @Override
   public void tail(long low, long high, int taillen, long totallen) {
     if (taillen > 0) {
+      if (taillen < 8) {
+        low &= (1L << 8*taillen) - 1;
+        high = 0;
+      } else {
+        high &= (1L << 8*(taillen-8)) - 1;
+      }
       if (taillen > 4) {
         if (taillen > 8) {
           if (taillen > 12) {

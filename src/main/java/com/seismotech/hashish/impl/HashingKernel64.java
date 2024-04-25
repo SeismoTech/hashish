@@ -1,6 +1,7 @@
 package com.seismotech.hashish.impl;
 
-import com.seismotech.hashish.util.Bits;
+import com.seismotech.ground.util.Bits;
+import com.seismotech.hashish.api.Hasher;
 import com.seismotech.hashish.api.Hashing;
 import com.seismotech.hashish.api.Kernel64;
 
@@ -9,13 +10,13 @@ public abstract class HashingKernel64 implements Hashing {
   protected abstract Kernel64 newKernel();
 
   @Override
-  public long hash(byte x) {
-    return integral(Bits.ubyte(x), 1);
+  public Hasher hasher() {
+    return new HasherKernel64(newKernel());
   }
 
   @Override
-  public long hash(char x) {
-    return integral(x, 2);
+  public long hash(byte x) {
+    return integral(Bits.ubyte(x), 1);
   }
 
   @Override

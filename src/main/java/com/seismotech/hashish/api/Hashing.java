@@ -2,9 +2,11 @@ package com.seismotech.hashish.api;
 
 public interface Hashing {
 
+  Hasher hasher();
+
   long hash(byte x);
 
-  long hash(char x);
+  default long hash(char x) {return hash((short) x);}
 
   long hash(short x);
 
