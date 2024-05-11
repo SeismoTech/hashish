@@ -20,6 +20,7 @@ dependencies {
   testImplementation 'commons-codec:commons-codec:1.16.1'
   testImplementation 'com.google.guava:guava:33.1.0-jre'
   testImplementation 'net.openhft:zero-allocation-hashing:0.16'
+  testImplementation 'org.seismotech:testafeo:1.0.0-SNAPSHOT'
 }
 
 tasks.withType(JavaCompile) {
@@ -37,8 +38,8 @@ test {
     exceptionFormat = 'full'
   }
   jvmArgs [
-    //To ensure that .gc() methods run a STW full GC cleaning current garbage
     '--add-modules=jdk.incubator.vector',
+    //To ensure that .gc() methods run a STW full GC cleaning current garbage
     '-XX:+UseParallelGC',
     //'-XX:+UseZGC',
     // '-verbosegc',

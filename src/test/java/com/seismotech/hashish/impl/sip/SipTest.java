@@ -15,19 +15,19 @@ import java.lang.management.MemoryMXBean;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.netbeans.lib.profiler.heap.Heap;
+import org.netbeans.lib.profiler.heap.JavaClass;
+
+import org.seismotech.testafeo.heap.MemoryWatcher;
+import org.seismotech.testafeo.heap.JavaDump;
+import org.seismotech.testafeo.heap.SimpleAllocationChecker;
+import org.seismotech.testafeo.heap.TryAllocationChecker;
+import org.seismotech.testafeo.heap.AllocationChecker;
+import org.seismotech.testafeo.heap.GCObserver;
+
 import com.seismotech.hashish.api.Hashing;
 import com.seismotech.hashish.api.Kernel64;
 import com.seismotech.hashish.impl.sip.SipHashing;
-
-import com.seismotech.hashish.test.MemoryWatcher;
-import com.seismotech.hashish.test.JavaDump;
-import com.seismotech.hashish.test.SimpleAllocationChecker;
-import com.seismotech.hashish.test.TryAllocationChecker;
-import com.seismotech.hashish.test.AllocationChecker;
-import com.seismotech.hashish.test.GCObserver;
-import org.netbeans.lib.profiler.heap.Heap;
-import org.netbeans.lib.profiler.heap.HeapFactory;
-import org.netbeans.lib.profiler.heap.JavaClass;
 
 class SipTest {
 
