@@ -5,7 +5,7 @@ import com.seismotech.hashish.api.Hasher;
 import com.seismotech.hashish.api.Hashing;
 import com.seismotech.hashish.api.Kernel128;
 
-public abstract class HashingKernel128 implements Hashing {
+public abstract class HashingKernel128 extends BareHashing implements Hashing {
 
   protected abstract Kernel128 newKernel();
 

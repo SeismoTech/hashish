@@ -4,7 +4,7 @@ import com.seismotech.ground.util.Bits;
 import com.seismotech.hashish.api.Hasher;
 import com.seismotech.hashish.api.Kernel64;
 
-public class HasherKernel64 implements Hasher {
+public class HasherKernel64 extends BareHasher implements Hasher {
 
   private final Kernel64 kernel;
   private byte[] buf;

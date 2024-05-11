@@ -5,7 +5,7 @@ import com.seismotech.ground.util.Bits;
 import com.seismotech.hashish.api.Hasher;
 import com.seismotech.hashish.api.Kernel8X;
 
-public class HasherKernel8X implements Hasher {
+public class HasherKernel8X extends BareHasher implements Hasher {
 
   private final Kernel8X kernel;
   private final int blockSize;

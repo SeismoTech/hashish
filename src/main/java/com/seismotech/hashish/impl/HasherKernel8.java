@@ -3,7 +3,7 @@ package com.seismotech.hashish.impl;
 import com.seismotech.hashish.api.Hasher;
 import com.seismotech.hashish.api.Kernel8;
 
-public class HasherKernel8 implements Hasher {
+public class HasherKernel8 extends BareHasher implements Hasher {
 
   private final Kernel8 kernel;
   private long total;

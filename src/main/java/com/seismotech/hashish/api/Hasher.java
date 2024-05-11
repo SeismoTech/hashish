@@ -3,7 +3,7 @@ package com.seismotech.hashish.api;
 public interface Hasher extends Hash {
   Hasher add(byte x);
 
-  default Hasher add(char x) {return add((short) x);}
+  Hasher add(char x);
 
   Hasher add(short x);
 
@@ -11,25 +11,21 @@ public interface Hasher extends Hash {
 
   Hasher add(long x);
 
-  default Hasher add(float x) {
-    return add(Float.floatToIntBits(x));
-  }
+  Hasher add(float x);
 
-  default Hasher add(double x) {
-    return add(Double.doubleToLongBits(x));
-  }
+  Hasher add(double x);
 
-  default Hasher add(byte[] xs) {return add(xs, 0, xs.length);}
+  Hasher add(byte[] xs);
 
   Hasher add(byte[] xs, int off, int len);
 
-  default Hasher add(char[] xs) {return add(xs, 0, xs.length);}
+  Hasher add(char[] xs);
 
   Hasher add(char[] xs, int off, int len);
 
-  default Hasher add(String xs) {return add(xs, 0, xs.length());}
+  Hasher add(String xs);
 
   Hasher add(String xs, int off, int len);
 
-  default Hasher addCode(Object x) {return add(x.hashCode());}
+  Hasher addCode(Object x);
 }

@@ -6,7 +6,7 @@ public interface Hashing {
 
   long hash(byte x);
 
-  default long hash(char x) {return hash((short) x);}
+  long hash(char x);
 
   long hash(short x);
 
@@ -14,29 +14,19 @@ public interface Hashing {
 
   long hash(long x);
 
-  default long hash(float x) {
-    return hash(Float.floatToIntBits(x));
-  }
+  long hash(float x);
 
-  default long hash(double x) {
-    return hash(Double.doubleToLongBits(x));
-  }
+  long hash(double x);
 
-  default long hash(byte[] xs) {
-    return hash(xs, 0, xs.length);
-  }
+  long hash(byte[] xs);
 
   long hash(byte[] xs, int off, int len);
 
-  default long hash(char[] xs) {
-    return hash(xs, 0, xs.length);
-  }
+  long hash(char[] xs);
 
   long hash(char[] xs, int off, int len);
 
-  default long hash(String xs) {
-    return hash(xs, 0, xs.length());
-  }
+  long hash(String xs);
 
   long hash(String xs, int off, int len);
 
