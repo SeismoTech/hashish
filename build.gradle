@@ -21,6 +21,7 @@ dependencies {
   testImplementation 'com.google.guava:guava:33.1.0-jre'
   testImplementation 'net.openhft:zero-allocation-hashing:0.16'
   testImplementation 'org.seismotech:testafeo:1.0.0-SNAPSHOT'
+  testImplementation 'org.seismotech:laespe:1.0.0-SNAPSHOT'
 }
 
 tasks.withType(JavaCompile) {
