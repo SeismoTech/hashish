@@ -56,7 +56,7 @@ jmh {
   //-Pjmhinc=XXXBenchmark
   if (rootProject.hasProperty('jmhinc')) {
     includes = [jmhinc]
-    profilers = ["gc"]
+    //profilers = ["gc"]
   }
   jvmArgs = [
     '--enable-preview',
