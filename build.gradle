@@ -1,0 +1,74 @@
+plugins {
+  id 'java-library'
+  id 'maven-publish'
+  id 'me.champeau.jmh' version '0.7.2'
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'com.seismotech:ground:1.0.0-SNAPSHOT'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0'
+  testImplementation 'org.hamcrest:hamcrest:2.2'
+  //testImplementation 'org.gridkit.jvmtool:hprof-heap:0.16'
+  testImplementation 'org.netbeans.modules:org-netbeans-lib-profiler:RELEASE210'
+  testImplementation 'commons-codec:commons-codec:1.16.1'
+  testImplementation 'com.google.guava:guava:33.1.0-jre'
+  testImplementation 'net.openhft:zero-allocation-hashing:0.16'
+  testImplementation 'org.seismotech:testafeo:1.0.0-SNAPSHOT'
+  testImplementation 'org.seismotech:laespe:1.0.0-SNAPSHOT'
+}
+
+tasks.withType(JavaCompile) {
+  configure(options) {
+    options.compilerArgs
+      << '-Xlint:deprecation' << '-Xlint:unchecked' << '-Xdiags:verbose'
+      << '--add-modules=jdk.incubator.vector'
+  }
+}
+
+test {
+  useJUnitPlatform()
+  testLogging {
+    events'standardOut', 'standardError'
+    exceptionFormat = 'full'
+  }
+  jvmArgs [
+    '--add-modules=jdk.incubator.vector',
+    //To ensure that .gc() methods run a STW full GC cleaning current garbage
+    '-XX:+UseParallelGC',
+    //'-XX:+UseZGC',
+    // '-verbosegc',
+    // '-Xbatch',
+    // '-XX:+PrintCompilation',
+    // '-XX:+UnlockDiagnosticVMOptions',
+    // '-XX:+PrintInlining',
+    // '-XX:CompileCommand=inline com.seismotech.enriqueta.hash.SipHashingTest$Memory::checkMemoryLong',
+  ]
+}
+
+jmh {
+  //-Pjmhinc=XXXBenchmark
+  if (rootProject.hasProperty('jmhinc')) {
+    includes = [jmhinc]
+    //profilers = ["gc"]
+  }
+  jvmArgs = [
+    '--enable-preview',
+    '--add-modules=jdk.incubator.vector',
+  ]
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = project.name
+      from components.java
+    }
+  }
+}
