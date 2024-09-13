@@ -23,17 +23,17 @@ API
 
 The API has the following structure.
 
-- There is a `com.seismotech.hashish.api` package with all the public
+- There is a `org.seismotech.hashish.api` package with all the public
 interfaces and no implementation.
 
-- There is a `com.seismotech.hashish.impl` package with general
+- There is a `org.seismotech.hashish.impl` package with general
 or partial implementations of some interfaces.
 
-- There is a `com.seismotech.hashish.impl.X` subpackage for each
+- There is a `org.seismotech.hashish.impl.X` subpackage for each
 algorithm family.
 The `X` is the name of the hashing family with any `hash` substring removed.
 For instance, the subpackage for MurmurHash3 32 bits algorithm is
-`com.seismotech.hashish.impl.murmur`.
+`org.seismotech.hashish.impl.murmur`.
 
 - There are 3 main interfaces;
 2 high level (`Hashing` and `Hasher`)
