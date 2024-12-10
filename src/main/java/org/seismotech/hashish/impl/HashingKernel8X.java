@@ -109,4 +109,28 @@ public abstract class HashingKernel8X extends BareHashing implements Hashing {
     kernel.finish(2*len);
     return kernel.hash64();
   }
+
+  @Override
+  public long hash(short[] xs, int off, int len) {
+    final Kernel8X kernel = newKernel();
+    for (int i = 0; i < len; i++) kernel.add(xs[off+i]);
+    kernel.finish(2*len);
+    return kernel.hash64();
+  }
+
+  @Override
+  public long hash(int[] xs, int off, int len) {
+    final Kernel8X kernel = newKernel();
+    for (int i = 0; i < len; i++) kernel.add(xs[off+i]);
+    kernel.finish(4*len);
+    return kernel.hash64();
+  }
+
+  @Override
+  public long hash(long[] xs, int off, int len) {
+    final Kernel8X kernel = newKernel();
+    for (int i = 0; i < len; i++) kernel.add(xs[off+i]);
+    kernel.finish(8*len);
+    return kernel.hash64();
+  }
 }

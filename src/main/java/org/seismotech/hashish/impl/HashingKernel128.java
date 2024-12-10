@@ -78,7 +78,7 @@ public abstract class HashingKernel128 extends BareHashing implements Hashing {
     final int tailoff = off + W*blockno;
     final int taillen = len - W*blockno;
     final long low, high;
-    if (4 <= taillen) {
+    if (W/2 <= taillen) {
       low = Bits.le64(xs, tailoff);
       high = Bits.le64tail(xs, tailoff + W/2, taillen - W/2);
     } else {
@@ -100,7 +100,7 @@ public abstract class HashingKernel128 extends BareHashing implements Hashing {
     final int tailoff = off + W*blockno;
     final int taillen = len - W*blockno;
     final long low, high;
-    if (4 <= taillen) {
+    if (W/2 <= taillen) {
       low = Bits.le64(xs, tailoff);
       high = Bits.le64tail(xs, tailoff + W/2, taillen - W/2);
     } else {
@@ -108,6 +108,63 @@ public abstract class HashingKernel128 extends BareHashing implements Hashing {
       high = 0;
     }
     kernel.tail(low, high, 2*taillen, 2*len);
+    return kernel.hash64();
+  }
+
+  @Override
+  public long hash(short[] xs, int off, int len) {
+    final int W = 8;
+    final Kernel128 kernel = newKernel();
+    final int blockno = len / W;
+    for (int i = 0; i < blockno; i++) {
+      kernel.block(Bits.le64(xs, off + W*i), Bits.le64(xs, off + W*i + W/2));
+    }
+    final int tailoff = off + W*blockno;
+    final int taillen = len - W*blockno;
+    final long low, high;
+    if (W/2 <= taillen) {
+      low = Bits.le64(xs, tailoff);
+      high = Bits.le64tail(xs, tailoff + W/2, taillen - W/2);
+    } else {
+      low = Bits.le64tail(xs, tailoff, taillen);
+      high = 0;
+    }
+    kernel.tail(low, high, 2*taillen, 2*len);
+    return kernel.hash64();
+  }
+
+  @Override
+  public long hash(int[] xs, int off, int len) {
+    final int W = 4;
+    final Kernel128 kernel = newKernel();
+    final int blockno = len / W;
+    for (int i = 0; i < blockno; i++) {
+      kernel.block(Bits.le64(xs, off + W*i), Bits.le64(xs, off + W*i + W/2));
+    }
+    final int tailoff = off + W*blockno;
+    final int taillen = len - W*blockno;
+    final long low, high;
+    if (W/2 <= taillen) {
+      low = Bits.le64(xs, tailoff);
+      high = Bits.le64tail(xs, tailoff + W/2, taillen - W/2);
+    } else {
+      low = Bits.le64tail(xs, tailoff, taillen);
+      high = 0;
+    }
+    kernel.tail(low, high, 4*taillen, 4*len);
+    return kernel.hash64();
+  }
+
+  @Override
+  public long hash(long[] xs, int off, int len) {
+    final Kernel128 kernel = newKernel();
+    final int tailoff = len >>> 1 << 1;
+    for (int i = 0; i < tailoff; i+=2) {
+      kernel.block(xs[off + i], xs[off + i + 1]);
+    }
+    final int taillen = len - tailoff;
+    final long low = taillen == 0 ? 0 : xs[tailoff];
+    kernel.tail(low, 0, 8*taillen, 8*len);
     return kernel.hash64();
   }
 }

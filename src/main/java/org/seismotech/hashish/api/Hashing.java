@@ -30,17 +30,17 @@ public interface Hashing {
 
   long hash(String xs, int off, int len);
 
-  // long hash(short[] xs);
+  long hash(short[] xs);
 
-  // long hash(short[] xs, int off, int len);
+  long hash(short[] xs, int off, int len);
 
-  // long hash(int[] xs);
+  long hash(int[] xs);
 
-  // long hash(int[] xs, int off, int len);
+  long hash(int[] xs, int off, int len);
 
-  // long hash(long[] xs);
+  long hash(long[] xs);
 
-  // long hash(long[] xs, int off, int len);
+  long hash(long[] xs, int off, int len);
 
   // long hash(float[] xs);
 
