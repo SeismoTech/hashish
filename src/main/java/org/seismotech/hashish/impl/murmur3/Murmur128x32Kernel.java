@@ -1,7 +1,7 @@
 package org.seismotech.hashish.impl.murmur3;
 
 import static java.lang.Integer.rotateLeft;
-import org.seismotech.ground.util.Bits;
+import org.seismotech.ground.mem.Bits;
 import org.seismotech.hashish.api.Kernel128;
 
 public class Murmur128x32Kernel implements Kernel128 {

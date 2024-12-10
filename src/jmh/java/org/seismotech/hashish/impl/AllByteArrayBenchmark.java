@@ -23,6 +23,10 @@ import org.seismotech.hashish.impl.xx.XX32Hashing;
 import org.seismotech.hashish.impl.xx.XX64Hashing;
 import org.seismotech.hashish.impl.sip.SipHashing;
 
+/**
+ * C2 21
+
+ */
 @Fork(value = 1)
 @Warmup(iterations = 4, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 4, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
@@ -59,52 +63,52 @@ public class AllByteArrayBenchmark {
     }
   }
 
-  @Benchmark
-  public long staticNativeAdler(Context ctx) {
+  //@Benchmark
+  public long nativeAdlerStatic(Context ctx) {
     ctx.nativeAdler.reset();
     ctx.nativeAdler.update(ctx.data);
     return ctx.nativeAdler.getValue();
   }
 
-  @Benchmark
-  public long dynamicNativeAdler(Context ctx) {
+  //@Benchmark
+  public long nativeAdlerDynamic(Context ctx) {
     final Adler32 adler = new Adler32();
     adler.update(ctx.data);
     return adler.getValue();
   }
 
-  @Benchmark
-  public long adler8(Context ctx) {
+  //@Benchmark
+  public long hashishAdler8(Context ctx) {
     return AdlerHashing8.THE.hash(ctx.data);
   }
 
-  @Benchmark
-  public long adler8X(Context ctx) {
+  //@Benchmark
+  public long hashishAdler8X(Context ctx) {
     return AdlerHashing8X.THE.hash(ctx.data);
   }
 
-  @Benchmark
-  public long adler8Vector(Context ctx) {
+  //@Benchmark
+  public long hashishAdler8Vector(Context ctx) {
     return AdlerHashing8Vector.THE.hash(ctx.data);
   }
 
-  @Benchmark
+  //@Benchmark
   public int apacheMurmur32(Context ctx) {
     return MurmurHash3.hash32x86(ctx.data);
   }
 
-  @Benchmark
-  public HashCode staticGuavaMurmur32(Context ctx) {
+  //@Benchmark
+  public HashCode guavaMurmur32Static(Context ctx) {
     return ctx.guavaMurmur32.hashBytes(ctx.data);
   }
 
-  @Benchmark
-  public long staticMurmur32(Context ctx) {
+  //@Benchmark
+  public long hashishMurmur32Static(Context ctx) {
     return ctx.murmur32.hash(ctx.data);
   }
 
-  @Benchmark
-  public long staticMurmur128x32(Context ctx) {
+  //@Benchmark
+  public long hashishMurmur128x32Static(Context ctx) {
     return ctx.murmur128x32.hash(ctx.data);
   }
 
@@ -114,44 +118,44 @@ public class AllByteArrayBenchmark {
   }
 
   @Benchmark
-  public HashCode staticGuavaMurmur128x64(Context ctx) {
+  public HashCode guavaMurmur128x64Static(Context ctx) {
     return ctx.guavaMurmur128x64.hashBytes(ctx.data);
   }
 
   @Benchmark
-  public long staticOHFTMurmur128x64(Context ctx) {
+  public long ohftMurmur128x64Static(Context ctx) {
     return ctx.ohftMurmur128x64.hashBytes(ctx.data);
   }
 
   @Benchmark
-  public long staticMurmur128x64(Context ctx) {
+  public long hashishMurmur128x64Static(Context ctx) {
     return ctx.murmur128x64.hash(ctx.data);
   }
 
   @Benchmark
-  public long staticApacheXX32(Context ctx) {
+  public long apacheXX32Static(Context ctx) {
     ctx.apacheXX32.reset();
     ctx.apacheXX32.update(ctx.data);
     return ctx.apacheXX32.getValue();
   }
 
   @Benchmark
-  public long staticXX32(Context ctx) {
+  public long hashishXX32Static(Context ctx) {
     return ctx.xx32.hash(ctx.data);
   }
 
   @Benchmark
-  public long staticOHFTXX64(Context ctx) {
+  public long ohftXX64Static(Context ctx) {
     return ctx.ohftXX64.hashBytes(ctx.data);
   }
 
   @Benchmark
-  public long staticXX64(Context ctx) {
+  public long hashishXX64Static(Context ctx) {
     return ctx.xx64.hash(ctx.data);
   }
 
-  @Benchmark
-  public long staticSip(Context ctx) {
+  //@Benchmark
+  public long hashishSipStatic(Context ctx) {
     return ctx.sip.hash(ctx.data);
   }
 }

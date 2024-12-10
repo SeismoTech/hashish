@@ -20,7 +20,6 @@ import org.netbeans.lib.profiler.heap.JavaClass;
 
 import org.seismotech.testafeo.heap.MemoryWatcher;
 import org.seismotech.testafeo.heap.JavaDump;
-import org.seismotech.testafeo.heap.SimpleAllocationChecker;
 import org.seismotech.testafeo.heap.TryAllocationChecker;
 import org.seismotech.testafeo.heap.AllocationChecker;
 import org.seismotech.testafeo.heap.GCObserver;

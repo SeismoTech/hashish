@@ -1,7 +1,7 @@
 package org.seismotech.hashish.impl;
 
 import static org.seismotech.ground.math.DMath.cdiv;
-import org.seismotech.ground.util.Bits;
+import org.seismotech.ground.mem.Bits;
 import org.seismotech.hashish.api.Hasher;
 import org.seismotech.hashish.api.Kernel128;
 

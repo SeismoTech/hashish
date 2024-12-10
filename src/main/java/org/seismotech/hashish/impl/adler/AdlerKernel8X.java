@@ -1,6 +1,6 @@
 package org.seismotech.hashish.impl.adler;
 
-import static org.seismotech.ground.util.Bits.ubyte;
+import static org.seismotech.ground.mem.Bits.ubyte;
 import org.seismotech.hashish.api.Kernel8X;
 
 public class AdlerKernel8X extends AdlerKernel8 implements Kernel8X {

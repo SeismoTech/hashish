@@ -1,6 +1,6 @@
 package org.seismotech.hashish.impl;
 
-import org.seismotech.ground.util.Bits;
+import org.seismotech.ground.mem.Bits;
 import org.seismotech.hashish.api.Hasher;
 import org.seismotech.hashish.api.Hashing;
 import org.seismotech.hashish.api.Kernel8;
