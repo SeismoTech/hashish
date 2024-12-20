@@ -5,12 +5,19 @@ plugins {
 }
 
 repositories {
-  mavenLocal()
   mavenCentral()
+  maven {
+    name = "GitHubPackages"
+    url = uri("https://maven.pkg.github.com/SeismoTech/artifacts")
+    credentials {
+      username = project.findProperty("github.actor") ?: System.getenv("GITHUB_ACTOR")
+      password = project.findProperty("github.token") ?: System.getenv("GITHUB_TOKEN")
+    }
+  }
 }
 
 dependencies {
-  implementation 'org.seismotech:ground:1.0.0-SNAPSHOT'
+  implementation 'org.seismotech:seismo-ground:1.0.0-SNAPSHOT'
 
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
   testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.0'
@@ -66,9 +73,19 @@ jmh {
 }
 
 publishing {
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = uri("https://maven.pkg.github.com/SeismoTech/artifacts")
+      credentials {
+        username = project.findProperty("github.actor") ?: System.getenv("GITHUB_ACTOR")
+        password = project.findProperty("github.token") ?: System.getenv("GITHUB_TOKEN")
+      }
+    }
+  }
   publications {
     mavenJava(MavenPublication) {
-      artifactId = project.name
+      artifactId = "seismo-${project.name}"
       from components.java
     }
   }
