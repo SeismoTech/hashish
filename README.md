@@ -40,10 +40,10 @@ For instance, the subpackage for MurmurHash3 32 bits algorithm is
 and 1 low level (`Kernel` family).
 There is a `Hash` auxiliary interface.
 
-- `Hash` is a abstract hash value.
+- `Hash` is a abstract hahttps://en.wikipedia.org/wiki/Locality-sensitive_hashingsh value.
 It hash methods to retrive a 32, 64 or 128 bits hash value.
 This library tries to avoid allocation of `Hash` instances to return
-a isolated hash values.
+hash values.
 When using a functional interface, a `long` is returned (see bellow).
 When using stateful objects, those object are instances of `Hash`,
 and therefore it is possible to retrieve the current hash value.
@@ -81,7 +81,7 @@ it must be partial,
 and it can be empty (when the data length is multiple of the block size).
 After calling `tail`, there should be no other call to `block` or `tail`.
 
-Kernels implement `Hash`, but their methods should be used only after
+    Kernels implement `Hash`, but their methods should be used only after
 calling `tail`.
 To support multiple partial hash values on a data stream,
 Kernels has a `clone` method, that produce a new instance,
@@ -103,7 +103,7 @@ Although other libraries tend to hide those implementations and offer
 static constructors in a kind of factory class or interface,
 we prefer to expose the classes implementing `Hashing`.
 There is no need to directly instantiate a `Hasher`;
-the ??? style is to get a `Hasher` with `Hashing.hasher()`.
+the recommended style is to get a `Hasher` with `Hashing.hasher()`.
 It is debatable if there is a real need to use Kernels directly.
 Currently they are accesible, just in case there is some basic data structure
 not supported in `Hashing` that could be hashed with better performance 
@@ -143,10 +143,10 @@ References
 https://github.com/google/farmhash/blob/master/Understanding_Hash_Functions)
 by Geoff Pike,
 from the FarmHash repo.
-A short, nice and comprenhensible introduction to Hash function design.
+A short, nice and comprehensible introduction to Hash function design.
 
 [SMHasher](https://github.com/aappleby/smhasher)
-The home of MurmurHash and de SMHasher test suite to verify the quality of
+The home of MurmurHash and the SMHasher test suite to check the quality of
 a hashing algorithm.
 
 
