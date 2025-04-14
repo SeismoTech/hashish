@@ -89,7 +89,7 @@ with a cloned state.
 After cloning, it is possible to use `tail` on one of the clones to get
 the partial hash value.
 
-There is a different Kernel interface for each block width.
+  There is a different Kernel interface for each block width.
 For the implemented algorithms, we needed
 `Kernel8`, `Kernel32`, `Kernel64`, `Kernel128` and `Kernel256`.
 As the block size grows, Kernels methods gets more and more parameters
