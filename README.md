@@ -1,7 +1,7 @@
 Hashish: a psychedelic approach to hashing
 ======================================================================
 
-This package contains implementation of several hashing algorithms
+This package contains the implementation of several hashing algorithms
 sharing a common interface.
 
 The criteria to add a hashing algorithm is
@@ -40,8 +40,8 @@ For instance, the subpackage for MurmurHash3 32 bits algorithm is
 and 1 low level (`Kernel` family).
 There is a `Hash` auxiliary interface.
 
-- `Hash` is a abstract hahttps://en.wikipedia.org/wiki/Locality-sensitive_hashingsh value.
-It hash methods to retrive a 32, 64 or 128 bits hash value.
+- `Hash` is a abstract hash value.
+It has methods to retrive a 32, 64 or 128 bits hash value.
 This library tries to avoid allocation of `Hash` instances to return
 hash values.
 When using a functional interface, a `long` is returned (see bellow).
@@ -94,16 +94,16 @@ For the implemented algorithms, we needed
 `Kernel8`, `Kernel32`, `Kernel64`, `Kernel128` and `Kernel256`.
 As the block size grows, Kernels methods gets more and more parameters
 and the implementation gets dirtier.
-Java limitations on memory management leaves little room to do things
+Java limitations on memory management leaves little room to do this
 better.
-Unfortunatelly, there are algorithms with upto 1024 block sizes!
+Unfortunatelly, there are algorithms with upto 1024 block size!
 
 - The main entry points are the implementations of `Hashing` interface.
 Although other libraries tend to hide those implementations and offer
 static constructors in a kind of factory class or interface,
-we prefer to expose the classes implementing `Hashing`.
+we prefer to expose classes implementing `Hashing`.
 There is no need to directly instantiate a `Hasher`;
-the recommended style is to get a `Hasher` with `Hashing.hasher()`.
+the recommended style is use `Hashing.hasher()` to get a `Hasher`.
 It is debatable if there is a real need to use Kernels directly.
 Currently they are accesible, just in case there is some basic data structure
 not supported in `Hashing` that could be hashed with better performance 
@@ -121,8 +121,6 @@ and many other standard optimizations.
 In fact, we are pretty happy with the project arquitecture.
 The Kernel approach is a perfect match for many important algoriths
 (MurmurHash, XXHash, SipHash).
-For those that cannot be implemented with a Kernel,
-`Hashing` and `Hasher` interfaces are perfectly feaseable.
 Although the Kernel approach is not feasible for some algorithms,
 and the `Hashing` and `Hasher` interfaces can cope with them.
 
